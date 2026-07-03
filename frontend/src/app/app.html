@@ -1,0 +1,52 @@
+<!-- Navigation Bar -->
+<app-navbar></app-navbar>
+
+<!-- Global Alert Notifications -->
+<div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1055;">
+  <div
+    *ngFor="let alert of alerts"
+    class="toast show align-items-center text-white border-0 shadow"
+    [ngClass]="{
+      'bg-success': alert.type === 'success',
+      'bg-danger': alert.type === 'danger',
+      'bg-warning text-dark': alert.type === 'warning',
+      'bg-info': alert.type === 'info'
+    }"
+    role="alert"
+    aria-live="assertive"
+    aria-atomic="true"
+  >
+    <div class="d-flex">
+      <div class="toast-body d-flex align-items-center gap-2">
+        <i
+          class="bi"
+          [ngClass]="{
+            'bi-check-circle-fill': alert.type === 'success',
+            'bi-exclamation-triangle-fill': alert.type === 'danger' || alert.type === 'warning',
+            'bi-info-circle-fill': alert.type === 'info'
+          }"
+        ></i>
+        <span>{{ alert.message }}</span>
+      </div>
+      <button
+        type="button"
+        class="btn-close me-2 m-auto"
+        [class.btn-close-white]="alert.type !== 'warning'"
+        (click)="removeAlert(alert)"
+        aria-label="Close"
+      ></button>
+    </div>
+  </div>
+</div>
+
+<!-- Main Application Views -->
+<main class="flex-shrink-0 min-vh-100 bg-light">
+  <router-outlet></router-outlet>
+</main>
+
+<!-- Footer -->
+<footer class="footer mt-auto py-3 bg-white border-top text-center text-muted small">
+  <div class="container">
+    <span>© 2026 Event Management Portal. Powered by Angular & Spring Boot.</span>
+  </div>
+</footer>
