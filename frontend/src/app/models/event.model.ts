@@ -7,6 +7,4 @@ export interface Event {
   eventDate: string;
   eventTime: string;
   venue?: string;
-  capacity: number;
-  createdBy?: User;
 }

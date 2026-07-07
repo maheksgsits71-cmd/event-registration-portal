@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { tap, catchError } from 'rxjs/operators';
+import { Observable, throwError, of } from 'rxjs';
+import { tap, catchError, map } from 'rxjs/operators';
 import { User } from '../models/user.model';
+import { Role } from '../models/role.enum';
 import { API_BASE_URL } from '../config/api-endpoints';
 
 @Injectable({
@@ -14,23 +15,25 @@ export class UserService {
   constructor(private http: HttpClient) {}
 
   register(user: User): Observable<User> {
-    console.log('UserService: Registering user...', user);
     return this.http.post<User>(`${this.apiUrl}/register`, user).pipe(
-      tap(res => console.log('UserService: Registered successfully:', res)),
       catchError(err => {
-        console.error('UserService: Error registering user:', err);
-        return throwError(() => err);
+        console.warn('Backend offline. Creating user locally.');
+        const str = localStorage.getItem('mock_users');
+        const mockUsers = str ? JSON.parse(str) : [];
+        const newUser = { ...user, userId: Math.floor(Math.random() * 1000) + 10 };
+        mockUsers.push(newUser);
+        localStorage.setItem('mock_users', JSON.stringify(mockUsers));
+        return of(newUser);
       })
     );
   }
 
   getAllUsers(): Observable<User[]> {
-    console.log('UserService: Requesting all users from:', this.apiUrl);
     return this.http.get<User[]>(this.apiUrl).pipe(
-      tap(data => console.log('UserService: Received users:', data)),
       catchError(err => {
-        console.error('UserService: Error fetching users:', err);
-        return throwError(() => err);
+        console.warn('Backend offline. Fetching users locally.');
+        const str = localStorage.getItem('mock_users');
+        return of(str ? JSON.parse(str) : []);
       })
     );
   }

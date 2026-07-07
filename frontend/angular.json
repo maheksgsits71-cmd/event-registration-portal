@@ -63,6 +63,14 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
+          "options": {
+            "proxyConfig": "proxy.conf.json",
+            "allowedHosts": [
+              "claim-unleaded-poplar.ngrok-free.dev",
+              ".ngrok-free.dev",
+              ".ngrok-free.app"
+            ]
+          },
           "configurations": {
             "production": {
               "buildTarget": "event-registration-frontend:build:production"
