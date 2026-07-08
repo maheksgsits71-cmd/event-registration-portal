@@ -61,8 +61,8 @@ Ensure the following are installed on your machine:
 3. Configure the connection URL, username, and password:
    properties
    spring.datasource.url=jdbc:mysql://localhost:3306/event_registration_portal
-   spring.datasource.username=root
-   spring.datasource.password=Mahek@sql09
+   spring.datasource.username=your_username
+   spring.datasource.password=your_password
    spring.jpa.hibernate.ddl-auto=update
    
 
